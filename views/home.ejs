@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiraX | <%= title %></title>
+    <link rel="stylesheet" href="/css/style.css"> 
+</head>
+<body>
+    <%- include('partials/header.ejs') %>
+
+    <main class="content-container">
+        <h2><%= lang === 'id' ? 'Gotong Royong di Era Digital' : 'Mutual Help in the Digital Era' %></h2>
+        
+        <% if (message) { %>
+            <div class="message <%= isError ? 'error' : 'success' %>">
+                <%= message %>
+            </div>
+        <% } %>
+        
+        <p>
+            <%= lang === 'id' 
+                ? 'KiraX adalah platform digital untuk Tukar Keahlian non-moneter dan Bank Waktu. Mari bersama membangun komunitas.' 
+                : 'KiraX is a digital platform for non-monetary Skill Exchange and Time Banking. Let us build the community together.' 
+            %>
+        </p>
+        
+        <a href="/<%= lang === 'id' ? 'id/gabung' : 'en/join' %>" class="btn-primary">
+            <%= lang === 'id' ? 'Mulai Bergabung Sekarang' : 'Start Joining Now' %>
+        </a>
+    </main>
+    
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

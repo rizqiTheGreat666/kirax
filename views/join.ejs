@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiraX | <%= title %></title>
+    <link rel="stylesheet" href="/css/style.css"> 
+    <style>
+        .form-container { display: flex; gap: 40px; justify-content: center; max-width: 900px; margin: 20px auto; padding: 20px; border-radius: 8px; background: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .auth-form { flex: 1; padding: 20px; border: 1px solid #ddd; border-radius: 6px; }
+        .auth-form input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .auth-form button { background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; width: 100%; }
+        .message { padding: 10px; margin-bottom: 20px; border-radius: 4px; color: #fff; background-color: #28a745; text-align: center; }
+        .message.error { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+    <%- include('partials/header.ejs') %>
+
+    <main class="content-container">
+        <h2><%= title %></h2>
+
+        <% if (message) { %>
+            <div class="message <%= message.includes('gagal') || message.includes('error') || message.includes('not found') || message.includes('Incorrect') || message.includes('salah') ? 'error' : '' %>">
+                <%= message %>
+            </div>
+        <% } %>
+
+        <div class="form-container">
+            <div class="auth-form">
+                <h3><%= lang === 'id' ? 'Daftar Akun Baru' : 'Register New Account' %></h3>
+                <form action="/register" method="POST">
+                    <input type="hidden" name="lang" value="<%= lang %>">
+                    <input type="text" name="username" placeholder="<%= lang === 'id' ? 'Username (Contoh: Bima01)' : 'Username (Ex: Bima01)' %>" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="<%= lang === 'id' ? 'Kata Sandi (Min. 6 karakter)' : 'Password (Min. 6 characters)' %>" required>
+                    <button type="submit">
+                        <%= lang === 'id' ? 'Daftar Sekarang' : 'Register Now' %>
+                    </button>
+                </form>
+            </div>
+
+            <div class="auth-form">
+                <h3><%= lang === 'id' ? 'Masuk ke Akun' : 'Login to Account' %></h3>
+                <form action="/login" method="POST">
+                    <input type="hidden" name="lang" value="<%= lang %>">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="<%= lang === 'id' ? 'Kata Sandi' : 'Password' %>" required>
+                    <button type="submit">
+                        <%= lang === 'id' ? 'Masuk' : 'Login' %>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

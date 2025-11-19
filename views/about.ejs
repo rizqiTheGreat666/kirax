@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiraX | <%= title %></title>
+    <link rel="stylesheet" href="/css/style.css"> 
+</head>
+<body>
+    <%- include('partials/header.ejs') %>
+
+    <main class="content-container">
+        <h2><%= title %></h2>
+        
+        <% if (message) { %>
+            <div class="message <%= isError ? 'error' : 'success' %>">
+                <%= message %>
+            </div>
+        <% } %>
+
+        <h3><%= lang === 'id' ? 'Tentang KiraX' : 'About KiraX' %></h3>
+        
+        <p><%= lang === 'id' 
+            ? 'KiraX adalah platform digital yang dibangun untuk memfasilitasi tukar keahlian non-moneter dan sistem Bank Waktu di komunitas lokal.'
+            : 'KiraX is a digital platform built to facilitate non-monetary skill exchange and time banking systems in local communities.'
+        %></p>
+
+        <h3 style="margin-top: 2rem;"><%= lang === 'id' ? 'Visi Kami' : 'Our Vision' %></h3>
+        
+        <p><%= lang === 'id' 
+            ? 'Menciptakan masyarakat yang lebih gotong royong, di mana setiap orang dapat berbagi keahlian mereka dan membantu sesama tanpa harus bergantung pada uang.'
+            : 'Creating a more cooperative society where everyone can share their skills and help others without relying on money.'
+        %></p>
+
+        <h3 style="margin-top: 2rem;"><%= lang === 'id' ? 'Fitur Utama' : 'Main Features' %></h3>
+        
+        <ul style="margin-left: 2rem; margin-top: 1rem;">
+            <li><%= lang === 'id' ? 'Tukar Keahlian Non-Moneter' : 'Non-Monetary Skill Exchange' %></li>
+            <li><%= lang === 'id' ? 'Sistem Bank Waktu (Time Banking)' : 'Time Banking System' %></li>
+            <li><%= lang === 'id' ? 'Live Chat untuk Koordinasi' : 'Live Chat for Coordination' %></li>
+            <li><%= lang === 'id' ? 'Dukungan Bahasa Indonesia dan Inggris' : 'Indonesian and English Language Support' %></li>
+            <li><%= lang === 'id' ? 'Sistem Admin untuk Manajemen Transaksi' : 'Admin System for Transaction Management' %></li>
+        </ul>
+
+        <h3 style="margin-top: 2rem;"><%= lang === 'id' ? 'Kontak Kami' : 'Contact Us' %></h3>
+        
+        <p><%= lang === 'id' 
+            ? 'Untuk informasi lebih lanjut, hubungi admin melalui halaman dukungan atau email support kami.'
+            : 'For more information, contact the admin through our support page or support email.'
+        %></p>
+
+        <div style="margin-top: 3rem; padding: 1rem; background: #e7f3ff; border-left: 4px solid #667eea; border-radius: 4px;">
+            <p><strong><%= lang === 'id' ? '❤️ Terima Kasih' : '❤️ Thank You' %></strong></p>
+            <p><%= lang === 'id' 
+                ? 'Terima kasih telah menjadi bagian dari komunitas KiraX. Bersama kita bisa menciptakan dunia yang lebih baik!'
+                : 'Thank you for being part of the KiraX community. Together we can create a better world!'
+            %></p>
+        </div>
+    </main>
+    
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

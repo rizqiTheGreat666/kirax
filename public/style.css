@@ -1,0 +1,112 @@
+/* public/css/style.css */
+/* public/css/style.css (Penambahan untuk Header) */
+
+.main-header {
+    background-color: var(--color-primary); /* Cokelat Soga */
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo h1 a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.8em;
+    font-family: var(--font-serif);
+}
+
+.main-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.main-nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    transition: background-color 0.2s;
+}
+
+.main-nav ul li a:hover {
+    background-color: #7a5c48; /* Sedikit lebih muda */
+    border-radius: 4px;
+}
+
+.user-controls a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    margin-left: 10px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.btn-join {
+    background-color: var(--color-secondary); /* Biru Nila */
+}
+
+.btn-logout, .btn-dashboard {
+    background-color: transparent;
+    border: 1px solid white;
+}
+
+.btn-lang {
+    background-color: #333;
+    border: none;
+}
+
+:root {
+    /* Palette Warna Pancadaya (Diinspirasi Batik Soga & Nila) */
+    --color-primary: #5A3E2A; /* Cokelat Soga Tua (untuk teks utama/tombol utama) */
+    --color-secondary: #007bff; /* Biru Nila Modern (untuk highlight/link) */
+    --color-background: #F8F8F8; /* Latar Belakang Bersih */
+    --color-card: #fffdf9; /* Krem Muda (Latar belakang card) */
+    --color-text-dark: #333333;
+    --color-accent: #FFD700; /* Emas (untuk highlight kecil/icon) */
+    --font-serif: 'Lora', 'Georgia', serif; /* Font dengan sentuhan elegan */
+    --font-sans: 'Roboto', 'Arial', sans-serif;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--color-background);
+    margin: 0;
+    padding: 0;
+}
+
+.content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Styling Kartu Listing (Sesuai dengan kode di skill_exchange.ejs) */
+.listing-card {
+    background: var(--color-card);
+    border: 1px solid #e0d9c8;
+    /* ... gaya kartu lainnya ... */
+}
+
+/* Styling Tombol Utama */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Tambahkan semua gaya yang kita definisikan dalam tag <style> di EJS ke sini */
+/* ... (gaya form-container, message, listings-grid, dll.) ... */

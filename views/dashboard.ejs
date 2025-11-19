@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiraX | <%= title %></title>
+    <link rel="stylesheet" href="/css/style.css"> 
+</head>
+<body>
+    <%- include('partials/header.ejs') %>
+
+    <main class="content-container">
+        <% if (!isAuthenticated) { %>
+            <div class="message error">
+                <%= lang === 'id' ? 'Anda harus login terlebih dahulu!' : 'You must login first!' %>
+            </div>
+            <p><a href="/<%= lang === 'id' ? 'id/gabung' : 'en/join' %>"><%= lang === 'id' ? 'Kembali ke Login' : 'Back to Login' %></a></p>
+        <% } else { %>
+            <h2><%= lang === 'id' ? 'Selamat Datang di Dashboard Anda' : 'Welcome to Your Dashboard' %></h2>
+            
+            <div style="padding: 20px; border: 1px solid #0056b3; background-color: #e0f7fa; border-radius: 8px; margin-bottom: 20px;">
+                <p>
+                    <%= lang === 'id' ? 'Halo,' : 'Hello,' %> <strong><%= currentUser.username %></strong> (<%= currentUser.role %>)!
+                </p>
+                <p>
+                    <%= lang === 'id' ? 'Email Anda:' : 'Your Email:' %> <%= currentUser.email %>
+                </p>
+                <p>
+                    <%= lang === 'id' ? 'Saldo Waktu Kredit Anda:' : 'Your Time Credit Balance:' %> <strong><%= currentUser.saldo_waktu %> Jam</strong>
+                </p>
+            </div>
+            
+            <a href="/<%= lang === 'id' ? 'id/tukarkeahlian' : 'en/skill-exchange' %>" class="btn-primary">
+                <%= lang === 'id' ? 'Lihat Tukar Keahlian' : 'View Skill Exchange' %>
+            </a>
+            
+            <a href="/<%= lang === 'id' ? 'id/keluar' : 'en/logout' %>" style="display: inline-block; padding: 10px 15px; background-color: #dc3545; color: white; border-radius: 4px; text-decoration: none; margin-left: 10px;">
+                <%= lang === 'id' ? 'Keluar (Logout)' : 'Logout' %>
+            </a>
+
+            <% if (currentUser.role === 'admin') { %>
+                <h3 style="margin-top: 30px; color: #dc3545;">🚨 <%= lang === 'id' ? 'Area Administrasi' : 'Administration Area' %></h3>
+                <p><%= lang === 'id' ? 'Anda memiliki akses sebagai Admin.' : 'You have admin access.' %></p>
+            <% } %>
+        <% } %>
+    </main>
+    
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

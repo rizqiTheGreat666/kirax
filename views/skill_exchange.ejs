@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiraX | <%= title %></title>
+    <link rel="stylesheet" href="/css/style.css"> 
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        #chat-window { height: 300px; border: 1px solid #ccc; overflow-y: scroll; padding: 10px; margin-bottom: 10px; background: #f9f9f9; }
+        #messages { list-style-type: none; padding: 0; margin: 0; }
+        #messages li { padding: 8px 10px; margin: 5px 0; background-color: #e9ecef; border-radius: 5px; }
+        .listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+        .listing-card { padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn-interact { background-color: #28a745; color: white; padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; }
+        .btn-interact:hover { background-color: #218838; }
+        .category-filters { display:flex; gap:10px; margin: 10px 0 20px 0; flex-wrap:wrap }
+        .category-btn { padding:8px 14px; border-radius:20px; border:1px solid #ccc; background:white; cursor:pointer }
+        .category-btn.active { background:#007bff; color:white; border-color:#007bff }
+    </style>
+</head>
+<body>
+    <%- include('partials/header.ejs') %>
+
+    <main class="content-container">
+        <h2><%= title %></h2>
+        
+        <% if (message) { %>
+            <div class="message <%= isError ? 'error' : 'success' %>">
+                <%= message %>
+            </div>
+        <% } %>
+
+        <p>
+            <%= lang === 'id' 
+                ? 'Di halaman ini, Anda dapat melihat penawaran keahlian. Gunakan Live Chat di bawah untuk berkoordinasi dengan pengguna lain.' 
+                : 'On this page, you can view skill offerings. Use the Live Chat below to coordinate with other users.' 
+            %>
+        </p>
+
+        <h3><%= lang === 'id' ? 'Listing Keahlian' : 'Skill Listings' %></h3>
+        
+        <% if (isAuthenticated) { %>
+            <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <h4><%= lang === 'id' ? 'Buat Listing Baru' : 'Create New Listing' %></h4>
+                <form method="POST" action="/create-listing">
+                    <input type="hidden" name="lang" value="<%= lang %>">
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: block; margin-bottom: 5px;">
+                            <%= lang === 'id' ? 'Judul Keahlian' : 'Skill Title' %>
+                        </label>
+                        <input type="text" name="title" placeholder="<%= lang === 'id' ? 'Misal: Web Development' : 'E.g: Web Development' %>" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" />
+                    </div>
+
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: block; margin-bottom: 5px;">
+                            <%= lang === 'id' ? 'Deskripsi' : 'Description' %>
+                        </label>
+                        <textarea name="description" placeholder="<%= lang === 'id' ? 'Jelaskan keahlian yang Anda tawarkan...' : 'Describe your skill...' %>" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; min-height: 80px;"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: block; margin-bottom: 5px;">
+                            <%= lang === 'id' ? 'Kategori' : 'Category' %>
+                        </label>
+                        <select name="category" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            <option value="programming">Programming</option>
+                            <option value="design">Design</option>
+                            <option value="writing">Writing</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="teaching">Teaching</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        <%= lang === 'id' ? 'Buat Listing' : 'Create Listing' %>
+                    </button>
+                </form>
+            </div>
+        <% } %>
+
+        <!-- Category filters (fixed list) -->
+        <div class="category-filters" aria-label="category filters">
+            <button class="category-btn active" data-filter="all">Semua</button>
+            <button class="category-btn" data-filter="programming">Programming</button>
+            <button class="category-btn" data-filter="design">Design</button>
+            <button class="category-btn" data-filter="writing">Writing</button>
+            <button class="category-btn" data-filter="marketing">Marketing</button>
+            <button class="category-btn" data-filter="teaching">Teaching</button>
+            <button class="category-btn" data-filter="other">Other</button>
+        </div>
+
+        <div class="listings-grid">
+            <% if (listings && listings.length > 0) { %>
+                <% listings.forEach(function(listing) { %>
+                    <div class="listing-card" data-category="<%= listing.category %>" data-listing-id="<%= listing._id %>">
+                        <h4><%= listing.title || 'No Title' %></h4>
+                        <p><%= listing.description || 'No description' %></p>
+                        <div style="font-size: 0.85em; color: #555; margin-top: 10px;">
+                            <%= lang === 'id' ? 'Oleh' : 'Posted by' %>: <strong><%= listing.user_id && listing.user_id.username ? listing.user_id.username : 'Unknown' %></strong>
+                        </div>
+                        
+                        <% if (isAuthenticated) { %>
+                            <% if (currentUser && listing.user_id && listing.user_id._id && currentUser._id && listing.user_id._id.toString() !== currentUser._id.toString()) { %>
+                                <button class="btn-interact" 
+                                        data-listing-id="<%= listing._id %>" 
+                                        data-title="<%= listing.title %>">
+                                    <%= lang === 'id' ? 'Mulai Chat' : 'Start Chat' %>
+                                </button>
+                            <% } else if (currentUser && listing.user_id && currentUser._id && listing.user_id._id && listing.user_id._id.toString() === currentUser._id.toString()) { %>
+                                <p style="font-size: 0.9em; color: green; margin-top: 10px;">
+                                    ✓ <%= lang === 'id' ? 'Listing Anda' : 'Your Listing' %>
+                                </p>
+                            <% } %>
+                        <% } %>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p><%= lang === 'id' ? 'Belum ada listing tersedia.' : 'No listings available yet.' %></p>
+            <% } %>
+        </div>
+
+        <h3 style="margin-top: 40px;"><%= lang === 'id' ? 'Live Chat Forum' : 'Live Chat Forum' %></h3>
+        
+        <% if (isAuthenticated) { %>
+            <label for="room-selector" style="display:block; margin-bottom:8px;">
+                <%= lang === 'id' ? 'Pilih Listing untuk chat:' : 'Select a Listing to chat:' %>
+            </label>
+            <select id="room-selector" style="width:100%; max-width:400px; margin-bottom:10px; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                <option value="">-- <%= lang === 'id' ? 'Pilih Listing' : 'Select Listing' %> --</option>
+                <% if (listings && listings.length > 0) { %>
+                    <% listings.forEach(function(listing) { %>
+                        <option value="<%= listing._id %>"><%= listing.title %></option>
+                    <% }); %>
+                <% } %>
+            </select>
+
+            <div id="chat-window" style="height: 300px; border: 1px solid #ccc; overflow-y: scroll; padding: 10px; margin-bottom: 10px; background: #f9f9f9;">
+                <ul id="messages" style="list-style-type: none; padding: 0; margin: 0;"></ul>
+            </div>
+            
+            <div style="display: flex; gap: 5px;">
+                <input id="message-input" type="text" autocomplete="off" placeholder="<%= lang === 'id' ? 'Tulis pesan...' : 'Type a message...' %>" disabled style="flex: 1; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" />
+                <button id="send-button" type="button" disabled style="padding: 8px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">
+                    <%= lang === 'id' ? 'Kirim' : 'Send' %>
+                </button>
+            </div>
+        <% } else { %>
+            <p style="padding: 15px; background: #fff3cd; border-radius: 4px;">
+                <%= lang === 'id' ? '⚠️ Anda harus login untuk menggunakan chat.' : '⚠️ You must login to use chat.' %>
+                <a href="/<%= lang === 'id' ? 'id/gabung' : 'en/join' %>"><%= lang === 'id' ? 'Login di sini' : 'Login here' %></a>
+            </p>
+        <% } %>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const roomSelector = document.getElementById('room-selector');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const messagesList = document.getElementById('messages');
+        const username = '<%= currentUser ? currentUser.username : "Guest" %>';
+        
+        let currentRoom = null;
+        let loadMessageInterval = null;
+
+        console.log('✓ Chat script loaded');
+        console.log('✓ Username:', username);
+
+        // Function to load messages
+        async function loadMessages() {
+            if (!currentRoom) return;
+            
+            try {
+                const response = await fetch(`/api/messages/${currentRoom}`);
+                const data = await response.json();
+                
+                if (data.success && data.messages) {
+                    // Clear and reload messages
+                    messagesList.innerHTML = '';
+                    data.messages.forEach(msg => {
+                        const li = document.createElement('li');
+                        li.style.padding = '8px 10px';
+                        li.style.margin = '5px 0';
+                        li.style.backgroundColor = '#e9ecef';
+                        li.style.borderRadius = '5px';
+                        li.textContent = msg.username + ': ' + msg.message;
+                        messagesList.appendChild(li);
+                    });
+                    // Scroll to bottom
+                    messagesList.parentElement.scrollTop = messagesList.parentElement.scrollHeight;
+                }
+            } catch (error) {
+                console.error('Error loading messages:', error);
+            }
+        }
+
+        // Room selection
+        roomSelector.addEventListener('change', function(e) {
+            currentRoom = this.value;
+            messagesList.innerHTML = '';
+            
+            // Clear previous interval
+            if (loadMessageInterval) {
+                clearInterval(loadMessageInterval);
+            }
+            
+            console.log('Room selected:', currentRoom);
+            
+            if (currentRoom) {
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                messageInput.focus();
+                
+                // Load messages immediately and then every 1 second
+                loadMessages();
+                loadMessageInterval = setInterval(loadMessages, 1000);
+                console.log('✓ Input and button enabled, polling started');
+            } else {
+                messageInput.disabled = true;
+                sendButton.disabled = true;
+                console.log('Input and button disabled');
+            }
+        });
+
+        // Send message
+        sendButton.addEventListener('click', async function() {
+            const message = messageInput.value.trim();
+            
+            if (!message) {
+                console.log('Empty message, not sending');
+                return;
+            }
+            
+            if (!currentRoom) {
+                console.log('No room selected');
+                return;
+            }
+
+            try {
+                console.log('Sending message:', { roomId: currentRoom, message: message });
+                
+                const response = await fetch('/api/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        roomId: currentRoom,
+                        message: message
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    console.log('✓ Message sent successfully');
+                    messageInput.value = '';
+                    messageInput.focus();
+                    
+                    // Reload messages immediately
+                    loadMessages();
+                } else {
+                    console.error('✗ Failed to send message:', data.error);
+                    alert('Gagal mengirim pesan: ' + data.error);
+                }
+            } catch (error) {
+                console.error('✗ Error sending message:', error);
+                alert('Error sending message: ' + error.message);
+            }
+        });
+
+        // Enter key to send
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendButton.click();
+            }
+        });
+    });
+
+    </script>
+    <script>
+    // Category filter (works for all users)
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.category-btn');
+        const cards = document.querySelectorAll('.listing-card');
+
+        function setActive(button) {
+            buttons.forEach(b => b.classList.remove('active'));
+            button.classList.add('active');
+        }
+
+        function filterBy(category) {
+            const sel = document.getElementById('room-selector');
+            const options = sel ? Array.from(sel.options) : [];
+
+            cards.forEach(card => {
+                const cat = (card.getAttribute('data-category') || '').toString().toLowerCase();
+                if (category === 'all') {
+                    card.style.display = '';
+                } else {
+                    if (cat === category.toLowerCase()) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+
+            // Also hide/show room-selector options so chat room list matches visible listings
+            if (options.length) {
+                options.forEach(opt => {
+                    if (!opt.value) return; // keep placeholder
+                    const liCard = document.querySelector('.listing-card[data-listing-id="' + opt.value + '"]');
+                    const optCategory = (liCard ? liCard.getAttribute('data-category') : '') || '';
+                    if (category === 'all') {
+                        opt.style.display = '';
+                    } else {
+                        if (optCategory.toLowerCase() === category.toLowerCase()) {
+                            opt.style.display = '';
+                        } else {
+                            opt.style.display = 'none';
+                        }
+                    }
+                });
+
+                // If currently selected option is now hidden, reset selection and trigger change to disable chat
+                if (sel.value) {
+                    const selectedOpt = sel.querySelector('option[value="' + sel.value + '"]');
+                    if (selectedOpt && selectedOpt.style.display === 'none') {
+                        sel.value = '';
+                        sel.dispatchEvent(new Event('change'));
+                    }
+                }
+            }
+        }
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                setActive(this);
+                filterBy(filter);
+            });
+        });
+    });
+    </script>
+    
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

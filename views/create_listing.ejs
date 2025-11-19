@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiraX | <%= title %></title>
+    <link rel="stylesheet" href="/css/style.css"> 
+    <style>
+        .listing-form-container { max-width: 600px; margin: 30px auto; padding: 25px; border-radius: 8px; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .listing-form-container input[type="text"], 
+        .listing-form-container input[type="number"],
+        .listing-form-container select,
+        .listing-form-container textarea {
+            width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 1em;
+        }
+        .listing-form-container textarea { resize: vertical; min-height: 100px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+        .form-group.radio-group { margin-bottom: 15px; }
+        .form-group.radio-group input { margin-right: 10px; width: auto; }
+        .btn-submit { background-color: #007bff; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 1.1em; width: 100%; }
+        .message { padding: 10px; margin-bottom: 20px; border-radius: 4px; color: #fff; background-color: #28a745; text-align: center; }
+        .error { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+    <header>
+        </header>
+
+    <main class="content-container">
+        <h2><%= title %></h2>
+        
+        <% if (message) { %>
+            <div class="message <%= (message.includes('Gagal') || message.includes('Failed')) ? 'error' : '' %>">
+                <%= message %>
+            </div>
+        <% } %>
+
+        <div class="listing-form-container">
+            <form action="/create-listing" method="POST">
+                <input type="hidden" name="lang" value="<%= lang %>">
+                
+                <div class="form-group radio-group">
+                    <label><%= lang === 'id' ? 'Tipe Listing' : 'Listing Type' %>:</label>
+                    <input type="radio" id="offer" name="type" value="offer" required>
+                    <label for="offer"><%= lang === 'id' ? 'Menawarkan Keahlian (Offer)' : 'Offer Skill' %></label>
+                    <input type="radio" id="request" name="type" value="request" required>
+                    <label for="request"><%= lang === 'id' ? 'Meminta Keahlian (Request)' : 'Request Skill' %></label>
+                </div>
+
+                <div class="form-group">
+                    <label for="title"><%= lang === 'id' ? 'Judul Singkat' : 'Short Title' %>:</label>
+                    <input type="text" id="title" name="title" placeholder="<%= lang === 'id' ? 'Contoh: Bantu Desain UI/UX' : 'Ex: Help with UI/UX Design' %>" required maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="description"><%= lang === 'id' ? 'Deskripsi Detail' : 'Detailed Description' %>:</label>
+                    <textarea id="description" name="description" placeholder="<%= lang === 'id' ? 'Jelaskan keahlian yang Anda tawarkan atau butuhkan.' : 'Describe the skill you offer or need.' %>" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category"><%= lang === 'id' ? 'Kategori Keahlian' : 'Skill Category' %>:</label>
+                    <select id="category" name="category" required>
+                        <option value=""><%= lang === 'id' ? 'Pilih Kategori' : 'Select Category' %></option>
+                        <option value="programming">Programming</option>
+                        <option value="design">Design</option>
+                        <option value="writing">Writing</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="teaching">Teaching</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="time_credit_cost"><%= lang === 'id' ? 'Biaya Waktu Kredit (Jam)' : 'Time Credit Cost (Hours)' %>:</label>
+                    <input type="number" id="time_credit_cost" name="time_credit_cost" min="0.5" step="0.5" placeholder="Contoh: 2.0" required>
+                    <small class="text-muted"><%= lang === 'id' ? 'Minimal 0.5 jam.' : 'Minimum 0.5 hours.' %></small>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <%= lang === 'id' ? 'Publikasikan Listing' : 'Publish Listing' %>
+                </button>
+            </form>
+        </div>
+        
+    </main>
+
+    <footer>
+        </footer>
+</body>
+</html>

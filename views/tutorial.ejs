@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiraX | <%= title %></title>
+    <link rel="stylesheet" href="/css/style.css"> 
+</head>
+<body>
+    <%- include('partials/header.ejs') %>
+
+    <main class="content-container">
+        <h2><%= title %></h2>
+        
+        <% if (message) { %>
+            <div class="message <%= isError ? 'error' : 'success' %>">
+                <%= message %>
+            </div>
+        <% } %>
+
+        <h3><%= lang === 'id' ? 'Panduan Penggunaan Tukar Keahlian' : 'How to Use Skill Exchange' %></h3>
+        
+        <div style="margin: 2rem 0;">
+            <h4><%= lang === 'id' ? '1. Daftar dan Login' : '1. Register and Login' %></h4>
+            <p><%= lang === 'id' 
+                ? 'Mulai dengan mendaftar akun Anda di halaman Masuk/Daftar. Gunakan username dan email yang mudah diingat.' 
+                : 'Start by registering your account on the Login/Register page. Use a memorable username and email.' 
+            %></p>
+        </div>
+
+        <div style="margin: 2rem 0;">
+            <h4><%= lang === 'id' ? '2. Buat Penawaran Keahlian' : '2. Post Skill Offerings' %></h4>
+            <p><%= lang === 'id' 
+                ? 'Masuk ke dashboard dan buat penawaran keahlian Anda. Jelaskan skill apa yang dapat Anda tawarkan kepada komunitas.' 
+                : 'Go to your dashboard and create skill offerings. Explain what skills you can offer to the community.' 
+            %></p>
+        </div>
+
+        <div style="margin: 2rem 0;">
+            <h4><%= lang === 'id' ? '3. Jelajahi Penawaran Lain' : '3. Browse Other Offerings' %></h4>
+            <p><%= lang === 'id' 
+                ? 'Kunjungi halaman Tukar Keahlian untuk melihat penawaran dari pengguna lain. Gunakan live chat untuk bernegosiasi.' 
+                : 'Visit the Skill Exchange page to see offerings from other users. Use live chat to negotiate.' 
+            %></p>
+        </div>
+
+        <div style="margin: 2rem 0;">
+            <h4><%= lang === 'id' ? '4. Kelola Bank Waktu Anda' : '4. Manage Your Time Bank' %></h4>
+            <p><%= lang === 'id' 
+                ? 'Saldo waktu Anda akan tercatat otomatis setiap kali Anda melakukan tukar keahlian. Pantau saldo Anda di dashboard.' 
+                : 'Your time balance will be automatically recorded each time you exchange skills. Monitor your balance in your dashboard.' 
+            %></p>
+        </div>
+
+        <p style="margin-top: 3rem; padding: 1rem; background: #f0f0f0; border-radius: 4px;">
+            <strong><%= lang === 'id' ? '💡 Tips:' : '💡 Tips:' %></strong><br>
+            <%= lang === 'id' 
+                ? 'Semakin aktif Anda berbagi keahlian, semakin banyak waktu kredit yang Anda kumpulkan. Gunakan waktu kredit Anda untuk mendapatkan keahlian dari orang lain.'
+                : 'The more actively you share your skills, the more time credits you accumulate. Use your time credits to get skills from others.'
+            %>
+        </p>
+    </main>
+    
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

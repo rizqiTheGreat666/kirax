@@ -1,0 +1,57 @@
+{
+  "general": {
+    "app_name": "KiraX",
+    "login_register": "Masuk / Daftar",
+    "logout": "Keluar",
+    "send": "Kirim",
+    "submit": "Daftar Sekarang",
+    "login": "Masuk",
+    "username": "Username",
+    "password": "Kata Sandi",
+    "email": "Email",
+    "back_to_home": "Kembali ke Beranda"
+  },
+  "titles": {
+    "home": "Beranda",
+    "tutorial": "Tutorial",
+    "skill_exchange": "Tukar Keahlian & Bank Waktu",
+    "about": "Tentang Kami",
+    "join": "Gabung",
+    "dashboard": "Dashboard Akun",
+    "create_listing": "Buat Listing Baru"
+  },
+  "messages": {
+    "reg_success": "Pendaftaran berhasil! Silakan masuk.",
+    "reg_error_exists": "Username atau Email sudah terdaftar.",
+    "login_not_found": "Username tidak ditemukan.",
+    "login_incorrect_pass": "Password salah.",
+    "auth_required": "Anda harus masuk untuk mengakses halaman itu.",
+    "transaction_pending_success": "Transaksi PENDING berhasil dibuat! Menunggu konfirmasi Admin.",
+    "listing_success": "Listing keahlian berhasil dipublikasikan!",
+    "no_active_listing": "Belum ada listing aktif saat ini."
+  },
+  "skill_exchange": {
+    "offer_skill": "Menawarkan Keahlian (Offer)",
+    "request_skill": "Meminta Keahlian (Request)",
+    "listing_type": "Tipe Listing",
+    "short_title": "Judul Singkat",
+    "detailed_description": "Deskripsi Detail",
+    "category": "Kategori Keahlian",
+    "time_cost_hours": "Biaya Waktu Kredit (Jam)",
+    "publish_listing": "Publikasikan Listing",
+    "active_listings": "Daftar Pertukaran & Penawaran Aktif",
+    "posted_by": "Oleh",
+    "start_interaction": "Mulai Interaksi (Chat)",
+    "confirm_transaction_need": "Konfirmasi Kebutuhan Transaksi",
+    "time_credit": "Jam Kredit"
+  },
+  "admin": {
+    "admin_area": "Area Administrasi: Transaksi Pending",
+    "provider": "Pemberi (Provider)",
+    "receiver": "Penerima (Receiver)",
+    "time": "Waktu",
+    "action": "Aksi",
+    "approve": "Setujui",
+    "no_pending_transactions": "Tidak ada transaksi pending."
+  }
+}

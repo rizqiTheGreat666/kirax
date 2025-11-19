@@ -1,0 +1,57 @@
+{
+  "general": {
+    "app_name": "KiraX",
+    "login_register": "Login / Register",
+    "logout": "Logout",
+    "send": "Send",
+    "submit": "Register Now",
+    "login": "Login",
+    "username": "Username",
+    "password": "Password",
+    "email": "Email",
+    "back_to_home": "Return to Home"
+  },
+  "titles": {
+    "home": "Home",
+    "tutorial": "Tutorial",
+    "skill_exchange": "Skill Exchange & Time Banking",
+    "about": "About Us",
+    "join": "Join/Register",
+    "dashboard": "Account Dashboard",
+    "create_listing": "Create New Listing"
+  },
+  "messages": {
+    "reg_success": "Registration successful! Please log in.",
+    "reg_error_exists": "Username or Email already registered.",
+    "login_not_found": "Username not found.",
+    "login_incorrect_pass": "Incorrect password.",
+    "auth_required": "You must log in to access that page.",
+    "transaction_pending_success": "PENDING transaction created successfully! Awaiting Admin confirmation.",
+    "listing_success": "Skill listing successfully published!",
+    "no_active_listing": "There are no active listings at the moment."
+  },
+  "skill_exchange": {
+    "offer_skill": "Offer Skill",
+    "request_skill": "Request Skill",
+    "listing_type": "Listing Type",
+    "short_title": "Short Title",
+    "detailed_description": "Detailed Description",
+    "category": "Skill Category",
+    "time_cost_hours": "Time Credit Cost (Hours)",
+    "publish_listing": "Publish Listing",
+    "active_listings": "Active Exchange & Offer Listings",
+    "posted_by": "Posted by",
+    "start_interaction": "Start Interaction (Chat)",
+    "confirm_transaction_need": "Confirm Transaction Need",
+    "time_credit": "Credit Hours"
+  },
+  "admin": {
+    "admin_area": "Administration Area: Pending Transactions",
+    "provider": "Provider",
+    "receiver": "Receiver",
+    "time": "Time",
+    "action": "Action",
+    "approve": "Approve",
+    "no_pending_transactions": "No pending transactions found."
+  }
+}
